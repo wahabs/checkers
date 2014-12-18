@@ -62,24 +62,24 @@ class Board
     nil
   end
 
-  # def dup
-  #   board_clone = Board.new(true)
-  #   (0..7).each do |row|
-  #     (0..7).each do |col|
-  #     end
-  #   end
-  # end
-
-  private
+  def dup
+    board_clone = Board.new(true)
+    board_clone.traverse do |row, col|
+      piece = self[[row, col]]
+      unless piece.nil?
+        board_clone[[row, col]] = Piece.new(board_clone, piece.color, piece.pos, piece.kinged)
+      end
+    end
+    board_clone
+  end
 
   def traverse(&prc)
     prc ||= Proc.new {|row, col| puts "(#{row},#{col})"}
-    (0..7).each do |row|
-      (0..7).each do |col|
-        prc.call(row, col)
-      end
-    end
+    (0..7).each {  |row| (0..7).each { |col| prc.call(row, col) }  }
   end
+
+
+  private
 
     def is_diagonal?(pos, other_pos)
       [[1,1], [-1,1], [1,-1], [-1, -1]].include?([other_pos[0] - pos[0], other_pos[1] - pos[1]])
@@ -96,23 +96,14 @@ class Board
       end
     end
 
-
 end
 
 b = Board.new
 b.render
-#b.move_piece([5,0], [4,1])
-# b.move_piece([2,3], [3,2])
-# b[[5,2]].perform_moves([[4,1], [2,3]])
-# b.move_piece([4,1], [2,3])
-# b.move_piece([1,4], [3,2])
-# b.move_piece([0,5], [1,4])
-# b.move_piece([5,4], [4,5])
-# b.move_piece([4,5], [3,4])
-# b.move_piece([3,4], [2,3])
-# b.move_piece([2,3], [0,5])
-# b.move_piece([0,5], [1,4])
-# b.move_piece([1,4], [2,3])
-# b.move_piece([2,3], [4,1])
-# b.move_piece([2,7], [3,8])
-#
+b.move_piece([5,0], [4,1])
+b.move_piece([2,3], [3,2])
+b.move_piece([4,1], [2,3])
+b.move_piece([1,4], [3,2])
+b.move_piece([0,5], [1,4])
+b[[5,4]].perform_moves([4,5], [3,4], [2,3], [0,5], [1,4], [2,3], [4,1])
+b.move_piece([2,7], [3,6])

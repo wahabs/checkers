@@ -14,12 +14,16 @@ class Piece
     @kinged = kinged
   end
 
-  def perform_moves(sequence)
+  def perform_moves(*sequence)
     if valid_mov_seq?(sequence)
       perform_moves!(sequence)
     else
       raise InvalidMoveError.new
     end
+  end
+
+  def perform_moves!(sequence)
+    sequence.each {|destination| board.move_piece(pos, destination)}
   end
 
   def perform_slide(destination)
@@ -77,11 +81,13 @@ class Piece
     end
 
     def valid_mov_seq?(sequence)
-      true
-    end
-
-    def perform_moves!(sequence)
-      sequence.each {|destination| board.move_piece(pos, destination)}
+      begin
+        board_clone = board.dup
+        board_clone[pos].perform_moves!(sequence)
+        true
+      rescue InvalidMoveError
+        false
+      end
     end
 
 end
