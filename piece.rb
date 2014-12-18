@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Piece
 
   def attr_accessor :board, :color, :pos, :kinged
@@ -21,17 +23,18 @@ class Piece
   end
 
   def perform_jump(enemy, destination)
-
     unless board[destination].nil? && enemy.color != color && sliding_moves.include?(enemy.pos)
       return false
     end
-
     board[enemy.pos] = nil
     perform_slide[enemy.pos]
     perform_slide[destination]
-
     maybe_promote
     true
+  end
+
+  def render
+    (color == :blk) ? " BLK".colorize(:white) : " RED".colorize(:red)
   end
 
 
@@ -45,13 +48,9 @@ class Piece
       (kinged) ? [[1,1], [-1,1]] : [[1,1], [-1,1], [1,-1], [-1, -1]]
     end
 
-    def king_me
-      kinged = true
-    end
-
     def maybe_promote
-      back_row = (color == :black) ? 7 : 0
-      king_me if pos[0] == back_row
+      back_row = (color == :red) ? 7 : 0
+      kinged = true if pos[0] == back_row
     end
 
 end
