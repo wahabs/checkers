@@ -1,9 +1,6 @@
 require 'colorize'
 require_relative 'piece'
 
-class NoPieceError < StandardError
-end
-
 class BoardEdgeError < StandardError
 end
 
@@ -27,7 +24,7 @@ class Board
   def move_piece(from, destination)
 
     piece = self[from]
-    raise NoPieceError.new if piece.nil?
+    #raise NoPieceError.new if piece.nil?
     raise BoardEdgeError.new unless destination.all? {|dir| (0..7).cover?(dir)}
 
     if piece.perform_slide(destination)
@@ -47,9 +44,9 @@ class Board
   end
 
   def render
-    puts "\n\n   0 1 2 3 4 5 6 7".colorize(:blue)
+    puts "\n   0 1 2 3 4 5 6 7".colorize(:blue)
     (0..7).each do |row|
-      print " #{row}".colorize(:blue)
+      print " #{"abcdefgh"[row]}".colorize(:blue)
       (0..7).each do |col|
         if self[[row, col]].nil?
           print " ▢".colorize(:blue)
@@ -78,6 +75,25 @@ class Board
     (0..7).each {  |row| (0..7).each { |col| prc.call(row, col) }  }
   end
 
+  def color_pieces(color)
+    grid.flatten.compact.select {|piece| piece.color == color}
+  end
+
+  def lost?(color)
+    color_pieces(color).empty?
+  end
+
+  # def needs_to_jump?(color)
+  #   color_pieces(color).any? do |piece|
+  #     board_clone = self.dup
+  #     piece_clone = board_clone[piece.pos]
+  #
+  #     piece_clone.adjacent_enemy_positions.each |enemy_pos| do
+  #       piece_clone.perform_jump(board_clone[enemy_pos], )
+  #     end
+  #     #board_clone[piece.pos].perform_jump(,)
+  #   end
+  # end
 
   private
 
@@ -100,10 +116,10 @@ end
 
 b = Board.new
 b.render
-b.move_piece([5,0], [4,1])
-b.move_piece([2,3], [3,2])
-b.move_piece([4,1], [2,3])
-b.move_piece([1,4], [3,2])
-b.move_piece([0,5], [1,4])
-b[[5,4]].perform_moves([4,5], [3,4], [2,3], [0,5], [1,4], [2,3], [4,1])
-b.move_piece([2,7], [3,6])
+# b.move_piece([5,0], [4,1])
+# b.move_piece([2,3], [3,2])
+# b.move_piece([4,1], [2,3])
+# b.move_piece([1,4], [3,2])
+# b.move_piece([0,5], [1,4])
+# b[[5,4]].perform_moves([4,5], [3,4], [2,3], [0,5], [1,4], [2,3], [4,1])
+# b.move_piece([2,7], [3,6])

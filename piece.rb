@@ -38,7 +38,7 @@ class Piece
   end
 
   def perform_jump(enemy, destination)
-    unless board[destination].nil? && enemy.color != color && sliding_moves.include?(enemy.pos)
+    unless board[destination].nil? && enemy.color != color && jumping_moves.include?(destination)
       return false
     end
     board[enemy.pos] = nil
@@ -51,7 +51,7 @@ class Piece
   end
 
   def in_valid_direction?(other_pos)
-    move_diffs.include?([other_pos[0] - pos[0], other_pos[1] - pos[1]])
+    slide_diffs.include?([other_pos[0] - pos[0], other_pos[1] - pos[1]])
   end
 
   def render
@@ -64,13 +64,17 @@ class Piece
   end
 
 
-  private
+  #private
 
     def sliding_moves
-      move_diffs.map { |diff| [pos[0] + diff[0], pos[1] + diff[1]] }
+      slide_diffs.map { |diff| [pos[0] + diff[0], pos[1] + diff[1]] }
     end
 
-    def move_diffs
+    def jumping_moves
+      slide_diffs.map { |diff| [pos[0] + diff[0]*2, pos[1] + diff[1]*2] }
+    end
+
+    def slide_diffs
       return [[1,1], [-1,1], [1,-1], [-1, -1]] if kinged
       color == :wht ? [[1, 1], [1, -1]] : [[-1, 1], [-1, -1]]
     end
