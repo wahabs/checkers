@@ -63,16 +63,15 @@ class Piece
     {color: color, pos: pos, kinged: kinged}
   end
 
+  def sliding_moves
+    slide_diffs.map { |diff| [pos[0] + diff[0], pos[1] + diff[1]] }
+  end
 
-  #private
+  def jumping_moves
+    slide_diffs.map { |diff| [pos[0] + diff[0]*2, pos[1] + diff[1]*2] }
+  end
 
-    def sliding_moves
-      slide_diffs.map { |diff| [pos[0] + diff[0], pos[1] + diff[1]] }
-    end
-
-    def jumping_moves
-      slide_diffs.map { |diff| [pos[0] + diff[0]*2, pos[1] + diff[1]*2] }
-    end
+    private
 
     def slide_diffs
       return [[1,1], [-1,1], [1,-1], [-1, -1]] if kinged

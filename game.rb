@@ -33,7 +33,8 @@ class Game
     turn = :wht
 
     until board.lost?(turn)
-
+      system("clear")
+      board.render
       begin
         start, destination = players[turn].play_turn
         #byebug
@@ -57,13 +58,8 @@ class Game
         retry
       end
 
-      if players[turn].is_a?(ComputerPlayer)
-        sleep(0.05)
-        system("clear")
-      end
-
+      sleep(0.1) if players[turn].is_a?(ComputerPlayer)
       turn = (turn == :wht) ? :red : :wht
-
 
     end
 
@@ -119,5 +115,6 @@ end
 
 
 #g = Game.human_v_human
-g = Game.comp_v_comp
+#g = Game.comp_v_comp
+g = Game.new(wht: ComputerPlayer.new(:wht), red: HumanPlayer.new(:red))
 g.play

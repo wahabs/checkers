@@ -113,13 +113,3 @@ class Board
     end
 
 end
-
-b = Board.new
-b.render
-# b.move_piece([5,0], [4,1])
-# b.move_piece([2,3], [3,2])
-# b.move_piece([4,1], [2,3])
-# b.move_piece([1,4], [3,2])
-# b.move_piece([0,5], [1,4])
-# b[[5,4]].perform_moves([4,5], [3,4], [2,3], [0,5], [1,4], [2,3], [4,1])
-# b.move_piece([2,7], [3,6])
