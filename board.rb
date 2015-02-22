@@ -24,7 +24,6 @@ class Board
   def move_piece(from, destination)
 
     piece = self[from]
-    #raise NoPieceError.new if piece.nil?
     raise BoardEdgeError.new unless destination.all? {|dir| (0..7).cover?(dir)}
 
     if piece.perform_slide(destination)
@@ -33,7 +32,6 @@ class Board
       jumping_over = piece.adjacent_enemy_positions.select do |enemy_pos|
         is_diagonal?(enemy_pos, destination)
       end[0]
-      #byebug
       if !jumping_over.nil? && piece.perform_jump(self[jumping_over], destination)
         render
       else
@@ -82,18 +80,6 @@ class Board
   def lost?(color)
     color_pieces(color).empty?
   end
-
-  # def needs_to_jump?(color)
-  #   color_pieces(color).any? do |piece|
-  #     board_clone = self.dup
-  #     piece_clone = board_clone[piece.pos]
-  #
-  #     piece_clone.adjacent_enemy_positions.each |enemy_pos| do
-  #       piece_clone.perform_jump(board_clone[enemy_pos], )
-  #     end
-  #     #board_clone[piece.pos].perform_jump(,)
-  #   end
-  # end
 
   private
 

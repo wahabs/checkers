@@ -54,7 +54,7 @@ class Game
         puts "You tried to move to #{destination}, which is invalid." if players[turn].is_a?(HumanPlayer)
         retry
       rescue NoMethodError
-        puts "idk lol" if players[turn].is_a?(HumanPlayer)
+        puts "Invalid move" if players[turn].is_a?(HumanPlayer)
         retry
       end
 
@@ -85,7 +85,7 @@ end
 class HumanPlayer < Player
 
   def play_turn
-    puts "#{(color == :wht) ? "White" : "Red"}, choose start and end coordinates."
+    puts "#{(color == :wht) ? "White" : "Red"}, choose start and end coordinates, e.g. a0 b1"
     gets.chomp.split(" ").map { |pos| ["abcdefgh".split("").find_index(pos[0]), pos[1].to_i] }
   end
 
